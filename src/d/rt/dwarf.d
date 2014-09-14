@@ -96,13 +96,13 @@ ptrdiff_t read_sleb128(ref const(ubyte)* p) {
 	
 	do {
 		b = *p++;
-		result |= (cast(long) (b & 0x7f) << shift);
+		result |= (cast(ptrdiff_t) (b & 0x7f) << shift);
 		shift += 7;
 	} while(b & 0x80);
 	
 	// Sign-extend if the value is negative.
 	if(shift < 8 * result.sizeof && (b & 0x40) != 0) {
-		result |= -(1L << shift);
+		result |= -(cast(ptrdiff_t)1L << shift);
 	}
 	
 	return result;
