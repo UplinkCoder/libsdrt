@@ -3,9 +3,12 @@
 LIBSDRT_SRC = $(wildcard $(LIBSDRT_ROOT)/src/d/rt/*.d)
 LIBSDRT_OBJ = $(LIBSDRT_SRC:$(LIBSDRT_ROOT)/src/d/rt/%.d=obj/rt/%.o)
 
-LIBSDRT = lib/libsdrt.a
-
-ALL_TARGET ?= $(LIBSDRT)
+ifeq ($(ARCHFLAG),-m32)
+	LIBSDRT = lib/libsdrt32.a
+else
+	LIBSDRT = lib/libsdrt.a
+endif
+ALL_TARGET ?= $(LIBSDRT) #$(LIBSDRT_BC)
 
 LIBSDRT_IMPORTS = -I$(LIBSDRT_ROOT)/src
 
@@ -13,7 +16,7 @@ all: $(ALL_TARGET)
 
 obj/rt/%.o: $(LIBSDRT_ROOT)/src/d/rt/%.d $(LIBSDRT_SRC) $(LIBSDRT_EXTRA_DEPS)
 	@mkdir -p obj/rt
-	$(SDC) -c -o $@ $< $(LIBSDRT_IMPORTS)
+	$(SDC) $(ARCHFLAG) -c -o $@ $< $(LIBSDRT_IMPORTS)
 
 $(LIBSDRT): $(LIBSDRT_OBJ)
 	@mkdir -p lib
