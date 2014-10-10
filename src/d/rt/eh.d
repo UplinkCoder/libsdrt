@@ -29,6 +29,7 @@ void __sd_eh_delete(_Unwind_Reason_Code reason, _Unwind_Exception* exceptionObje
 /**
  * Throws a exception.
  */
+
 extern(C) void __sd_eh_throw(Throwable t) {
 	if(inFlight !is null) {
 		// TODO: chain
@@ -47,6 +48,7 @@ extern(C) void __sd_eh_throw(Throwable t) {
 	printf("FAILED TO RAISE EXCEPTION %i\n".ptr, f);
 	exit(-1);
 }
+
 
 extern(C) _Unwind_Reason_Code __sd_eh_personality(
 	int ver,
@@ -159,6 +161,7 @@ extern(C) _Unwind_Reason_Code __sd_eh_personality(
 	// No action found.
 	return _Unwind_Reason_Code.CONTINUE_UNWIND;
 }
+
 
 private _Unwind_Reason_Code setupCatch(_Unwind_Context* ctx, _Unwind_Action actions, ptrdiff_t switchval, _Unwind_Ptr landingPad, _Unwind_Exception* exceptionObject) {
 	if (actions & _Unwind_Action.SEARCH_PHASE) {
